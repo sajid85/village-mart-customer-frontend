@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { ShoppingCartIcon, HeartIcon, UserIcon } from '@heroicons/react/24/outline';
 import { getProfile } from '@/utils/api';
 import Logo from './Logo';
@@ -15,6 +14,7 @@ interface HeaderProps {
 
 const Header = ({ searchQuery, onSearchChange }: HeaderProps) => {
   const router = useRouter();
+  const pathname = usePathname(); // <-- ADD THIS LINE
   const [user, setUser] = useState<any>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -28,7 +28,7 @@ const Header = ({ searchQuery, onSearchChange }: HeaderProps) => {
       }
     };
 
-    if (localStorage.getItem('token')) {
+    if (typeof window !== 'undefined' && localStorage.getItem('token')) {
       fetchUser();
     }
   }, []);
@@ -44,7 +44,7 @@ const Header = ({ searchQuery, onSearchChange }: HeaderProps) => {
         {/* Logo and Back Button */}
         <div className="flex items-center space-x-4">
           {/* Back Button */}
-          {router.pathname !== '/' && (
+          {pathname !== '/' && (
             <button 
               onClick={() => router.back()}
               className="flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-300"
@@ -99,4 +99,4 @@ const Header = ({ searchQuery, onSearchChange }: HeaderProps) => {
   );
 };
 
-export default Header; 
+export default Header;

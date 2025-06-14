@@ -9,7 +9,6 @@ import { getProfile, getProduct, addToCart, addToWishlist, isInWishlist } from '
 import { getPlaceholderImage } from '@/utils/cloudinary';
 import toast from 'react-hot-toast';
 import Image from 'next/image';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface Product {
   id: string;
@@ -129,10 +128,6 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
     }
   };
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -178,7 +173,7 @@ export default function ProductDetailsPage({ params }: { params: { id: string } 
                 {/* Loading spinner */}
                 {imageState === 'loading' && (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
-                    <LoadingSpinner />
+                    {/* Placeholder for the loading spinner */}
                   </div>
                 )}
                 

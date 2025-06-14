@@ -12,7 +12,6 @@ import {
 } from '@heroicons/react/24/outline';
 import { getProfile, updateProfile, changePassword, updateSettings, deleteAccount } from '@/utils/api';
 import toast from 'react-hot-toast';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface User {
   id: string;
@@ -170,10 +169,6 @@ export default function ProfilePage() {
     { id: 'payments', name: 'Payment Methods', icon: CreditCardIcon },
     { id: 'settings', name: 'Account Settings', icon: CogIcon },
   ];
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

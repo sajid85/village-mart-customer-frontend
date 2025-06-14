@@ -8,7 +8,6 @@ import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import PromotionalBanner from '@/components/PromotionalBanner';
 import Footer from '@/components/Footer';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -24,10 +23,6 @@ export default function DashboardPage() {
     };
     verifyAuth();
   }, [router, checkAuth]);
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
 
   if (!user) {
     return null;

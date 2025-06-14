@@ -15,7 +15,6 @@ import {
 import { getPlaceholderImage } from "@/utils/cloudinary";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import LoadingSpinner from '@/components/LoadingSpinner';
 import { useRouter } from "next/navigation";
 
 interface Product {
@@ -178,11 +177,6 @@ export default function ProductGrid({
           >
             <Link href={`/products/${product.id}`}>
               <div className="relative aspect-square">
-                {imageStates[product.id] === "loading" && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
-                    <LoadingSpinner />
-                  </div>
-                )}
                 <Image
                   src={
                     product.imageUrl || getPlaceholderImage(product.category)

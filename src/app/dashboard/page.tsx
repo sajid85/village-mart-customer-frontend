@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import PromotionalBanner from '@/components/PromotionalBanner';
 import Footer from '@/components/Footer';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -25,11 +26,7 @@ export default function DashboardPage() {
   }, [router, checkAuth]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (!user) {

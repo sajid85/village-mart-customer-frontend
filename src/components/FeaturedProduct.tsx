@@ -7,6 +7,7 @@ import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { getPlaceholderImage } from '@/utils/cloudinary';
 import { addToCart } from '@/utils/api';
 import toast from 'react-hot-toast';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface Product {
   id: string;
@@ -101,7 +102,7 @@ export default function FeaturedProduct() {
           {/* Loading spinner */}
           {imageState === 'loading' && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-10">
-              <div className="animate-spin rounded-full h-12 w-12 border-2 border-blue-500 border-t-transparent"></div>
+              <LoadingSpinner />
             </div>
           )}
 

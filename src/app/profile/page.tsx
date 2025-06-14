@@ -12,6 +12,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { getProfile, updateProfile, changePassword, updateSettings, deleteAccount } from '@/utils/api';
 import toast from 'react-hot-toast';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface User {
   id: string;
@@ -171,11 +172,7 @@ export default function ProfilePage() {
   ];
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (

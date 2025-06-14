@@ -16,6 +16,7 @@ import { getPlaceholderImage } from "@/utils/cloudinary";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: string;
@@ -47,6 +48,7 @@ export default function ProductGrid({
   const [loading, setLoading] = useState(true);
   const [wishlistItems, setWishlistItems] = useState<Set<string>>(new Set());
   const [imageStates, setImageStates] = useState<{ [key: string]: ImageState }>({});
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -100,8 +102,10 @@ export default function ProductGrid({
   const handleAddToCart = async (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
     try {
-      await addToCart(product.id);
+      const response = await addToCart(product.id);
+      console.log('addToCart response:', response);
       toast.success(`${product.name} added to cart`);
+      router.push("/cart");
     } catch (error) {
       console.error("Failed to add to cart:", error);
       toast.error("Failed to add to cart");
@@ -217,78 +221,77 @@ export default function ProductGrid({
                     </span>
                   </div>
                 )}
-
-                <div className="absolute top-2 right-2 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                  <button
-                    onClick={(e) => handleAddToWishlist(e, product)}
-                    className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50"
-                  >
-                    {wishlistItems.has(product.id) ? (
-                      <HeartIconSolid className="h-5 w-5 text-red-500" />
-                    ) : (
-                      <HeartIcon className="h-5 w-5 text-gray-600" />
-                    )}
-                  </button>
-                  {product.inStock && (
-                    <button
-                      onClick={(e) => handleAddToCart(e, product)}
-                      className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50"
-                    >
-                      <ShoppingCartIcon className="h-5 w-5 text-gray-600" />
-                    </button>
-                  )}
-                </div>
                 {product.isOnSale && (
                   <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded z-20">
                     SALE
                   </span>
                 )}
               </div>
-              <div className="p-4">
-                <h3 className="text-sm text-gray-500 mb-1">
-                  {product.category}
-                </h3>
-                <h2 className="font-semibold text-gray-900 mb-2">
-                  {product.name}
-                </h2>
-                <div className="flex items-center mb-2">
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <StarIcon
-                        key={i}
-                        className={`h-4 w-4 ${
-                          i < product.rating
-                            ? "text-yellow-400"
-                            : "text-gray-200"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-xs text-gray-500 ml-2">
-                    ({product.reviewCount})
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-bold text-gray-900">
-                      ${Number(product.price).toFixed(2)}
-                    </span>
-                    {product.oldPrice && (
-                      <span className="text-sm text-gray-500 line-through">
-                        ${Number(product.oldPrice).toFixed(2)}
-                      </span>
-                    )}
-                  </div>
-                  <span
-                    className={`text-sm ${
-                      product.inStock ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
-                    {product.inStock ? "In Stock" : "Out of Stock"}
-                  </span>
-                </div>
-              </div>
             </Link>
+            <div className="p-4">
+              <h3 className="text-sm text-gray-500 mb-1">
+                {product.category}
+              </h3>
+              <h2 className="font-semibold text-gray-900 mb-2">
+                <Link href={`/products/${product.id}`}>{product.name}</Link>
+              </h2>
+              <div className="flex items-center mb-2">
+                <div className="flex items-center">
+                  {[...Array(5)].map((_, i) => (
+                    <StarIcon
+                      key={i}
+                      className={`h-4 w-4 ${
+                        i < product.rating
+                          ? "text-yellow-400"
+                          : "text-gray-200"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-xs text-gray-500 ml-2">
+                  ({product.reviewCount})
+                </span>
+              </div>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-2">
+                  <span className="font-bold text-gray-900">
+                    ${Number(product.price).toFixed(2)}
+                  </span>
+                  {product.oldPrice && (
+                    <span className="text-sm text-gray-500 line-through">
+                      ${Number(product.oldPrice).toFixed(2)}
+                    </span>
+                  )}
+                </div>
+                <span
+                  className={`text-sm ${
+                    product.inStock ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {product.inStock ? "In Stock" : "Out of Stock"}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 mt-2">
+                <button
+                  onClick={(e) => handleAddToWishlist(e, product)}
+                  className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50"
+                >
+                  {wishlistItems.has(product.id) ? (
+                    <HeartIconSolid className="h-5 w-5 text-red-500" />
+                  ) : (
+                    <HeartIcon className="h-5 w-5 text-gray-600" />
+                  )}
+                </button>
+                {product.inStock && (
+                  <button
+                    onClick={(e) => handleAddToCart(e, product)}
+                    className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50"
+                  >
+                    <ShoppingCartIcon className="h-5 w-5 text-gray-600" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         ))}
       </div>

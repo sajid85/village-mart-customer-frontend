@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Loading from '../loading';
 
 export default function TestLoadingPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,12 +30,6 @@ export default function TestLoadingPage() {
             Show Loading Screen
           </button>
         </div>
-
-        {isLoading && (
-          <div className="fixed inset-0 z-50">
-            <Loading />
-          </div>
-        )}
       </div>
     </div>
   );
